@@ -1,6 +1,6 @@
 1. **Relatórios de Receita**
     
-    * Qual foi o total de receitas no ano de 1997?
+    * Revenues for 1997
 
     ```sql
     CREATE VIEW total_revenues_1997_view AS
@@ -14,7 +14,7 @@
     ON ord.order_id = order_details.order_id;
     ```
 
-    * Faça uma análise de crescimento mensal e o cálculo de YTD
+    * Análise de crescimento mensal e o cálculo de YTD
 
     ```sql
     CREATE VIEW view_receitas_acumuladas AS
@@ -55,7 +55,7 @@
 
 2. **Segmentação de clientes**
     
-    * Qual é o valor total que cada cliente já pagou até agora?
+    * Valor total que cada cliente já pagou até agora
 
     ```sql
     CREATE VIEW view_total_revenues_per_customer AS
@@ -74,7 +74,7 @@
         total DESC;
     ```
 
-    * Separe os clientes em 5 grupos de acordo com o valor pago por cliente
+    * Clientes em 5 grupos de acordo com o valor pago por cliente
 
     ```sql
     CREATE VIEW view_total_revenues_per_customer_group AS
