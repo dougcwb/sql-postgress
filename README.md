@@ -19,11 +19,11 @@ docker compose up
 
 This is based on [Northwind Github](https://github.com/pthom/northwind_psql)
 
-![northwind](northwind.png)
+![northwind](/images/northwind.png)
 
 ## SQL Commands
 
-![sql_mindmap](<sql_mindmap.jpg>)
+![sql_mindmap](/images/sql_mindmap.jpg)
 
 ## 1. DDL – Data Definition Language
 DDL is a set of SQL commands used to create, modify, and delete database structures but not data. 

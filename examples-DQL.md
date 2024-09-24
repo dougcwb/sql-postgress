@@ -85,7 +85,7 @@ ORDER BY total DESC;
 
 ### 3. JOINS:
 
-![Joins](<joins.jpg>)
+![Joins](/images/joins.jpg)
 
 #### 3.1 INNER JOIN (or just JOIN)
 Retrieves only the related rows in both tables
