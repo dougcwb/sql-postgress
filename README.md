@@ -2,20 +2,22 @@
 
 
 ## Install Postgres and PGAdmin
-If you don't have a server yet, use a docker project like [Northwind Github](https://github.com/pthom/northwind_psql) to setup the environment.
-
-## My Connection
-```sql
-Name=CasaOs
-HOST=192.168.1.15
-PORT=5432
-DATABASE=casaos
-USER=casaos
-PASSWORD=casaos
+In VsCode, Open terminal and run:
+```bash
+docker compose up
 ```
 
-## Install NorthWind database
-Open `northwind.sql` and run inside a new SQL query window. It will create all the setup to this project. This is based on [Northwind Github](https://github.com/pthom/northwind_psql)
+### Postgres Access
+- URL: http://localhost:5050  
+- password: postgres
+
+### Config Connection
+- host: db
+- database: northwind
+- user: postgres  
+- PW: postgres  
+
+This is based on [Northwind Github](https://github.com/pthom/northwind_psql)
 
 ![northwind](northwind.png)
 
