@@ -1,7 +1,22 @@
 ## Summary
-1. [Where clause](#1-where-clause)
+1. [WHERE](#1-where-clause)
+2. [Aggregate Functions](#2-aggregate-functions)
+3. [JOINS](#3-joins)
+    - [INNER JOIN](#31-inner-join-or-just-join)
+    - [LEFT JOIN](#32-left-join)
+    - [RIGHT JOIN](#33-right-join)
+    - [FULL JOIN](#34-full-join)
+    - [CROSS JOIN](#35-cross-join)
 
-### 1. Where clause
+4. [Windows Functions](#4-windows-functions)
+    - [Comparison GROUP BY vs Windows Functions](#41-comparison-group-by-vs-windows-functions)
+    - [RANK(), DENSE_RANK() and ROW_NUMBER()](#42-rank-dense_rank-and-row_number)
+    - [PERCENT_RANK() and CUME_DIST()](#43-percent_rank-and-cume_dist)
+    - [NTILE](#44-ntile)
+    - [LAG(), LEAD()](#45-lag-lead)
+
+
+### 1. WHERE
 ```sql
 SELECT * FROM customers WHERE country='Mexico';
 
@@ -25,7 +40,7 @@ SELECT * FROM orders
 WHERE order_date BETWEEN '07/04/1996' AND '07/09/1996';
 ```
 
-### Aggregate Functions:
+### 2. Aggregate Functions:
 ```sql
 -- MIN()
 SELECT MIN(unit_price) AS min_price
@@ -35,7 +50,7 @@ FROM products;
 SELECT MAX(unit_price) AS max_price
 FROM products;
 
--- TOP product price
+-- TOP()
 SELECT product_name, MAX(unit_price) AS max_price
 FROM products
 GROUP BY product_name
@@ -58,57 +73,81 @@ FROM order_details;
 SELECT category_id, MIN(unit_price) AS min_price
 FROM products
 GROUP BY category_id;
+
+-- HAVING
+SELECT o.product_id, p.product_name, SUM(o.quantity) AS total
+FROM order_details o
+JOIN products p ON p.product_id = o.product_id
+GROUP BY o.product_id, p.product_name
+HAVING SUM(o.quantity) < 200
+ORDER BY total DESC;
 ```
+
+### 3. JOINS:
+
 ![Joins](<joins.jpg>)
 
-### JOINS:
+#### 3.1 INNER JOIN (or just JOIN)
+Retrieves only the related rows in both tables
 ```sql
--- Inner Join: Retrieves only the related rows in both tables
 -- Orders from year 1996
 SELECT *
 FROM orders o
 INNER JOIN customers c ON o.customer_id = c.customer_id
 WHERE EXTRACT(YEAR FROM o.order_date) = 1996;
+```
 
--- RIGHT JOIN: Retrieves the second table and the related rows from first table
+#### 3.2 LEFT JOIN
+Retrieves the first table and the related rows from second table
+```sql
+SELECT e.city AS cidade, 
+       COUNT(DISTINCT e.employee_id) AS emp_number, 
+       COUNT(DISTINCT c.customer_id) AS cust_number
+FROM employees e 
+LEFT JOIN customers c ON e.city = c.city
+GROUP BY e.city
+ORDER BY cidade;
+```
+
+#### 3.3 RIGHT JOIN
+Retrieves the second table and the related rows from first table
+```sql
 SELECT c.city AS cidade, 
-       COUNT(DISTINCT c.customer_id) AS numero_de_clientes, 
-       COUNT(DISTINCT e.employee_id) AS numero_de_funcionarios
+       COUNT(DISTINCT c.customer_id) AS cust_number, 
+       COUNT(DISTINCT e.employee_id) AS emp_number
 FROM employees e 
 RIGHT JOIN customers c ON e.city = c.city
 GROUP BY c.city
 ORDER BY cidade;
+```
 
--- FULL JOIN: Retrieves all rows from all tables
+#### 3.4 FULL JOIN
+Retrieves all rows from all tables
+```sql
 SELECT
 	COALESCE(e.city, c.city) AS cidade,
-	COUNT(DISTINCT e.employee_id) AS numero_de_funcionarios,
-	COUNT(DISTINCT c.customer_id) AS numero_de_clientes
+	COUNT(DISTINCT e.employee_id) AS emp_number,
+	COUNT(DISTINCT c.customer_id) AS cust_number
 FROM employees e 
 FULL JOIN customers c ON e.city = c.city
 GROUP BY e.city, c.city
 ORDER BY cidade;
+```
 
--- CROSS JOIN: Retrieves all possible combinations between two or more tables without any specific condition for the join.
+#### 3.5 CROSS JOIN
+Retrieves all possible combinations between two or more tables without any specific condition for the join
+```sql
 SELECT c.customer_id, c.company_name, o.*
 FROM Customers c 
 CROSS JOIN Orders o
--- Be careful! this will get a lot of rows and can crash the database or the client
-```
-### HAVING
-```sql
--- HAVING
-SELECT o.product_id, p.product_name, SUM(o.quantity) AS quantidade_total
-FROM order_details o
-JOIN products p ON p.product_id = o.product_id
-GROUP BY o.product_id, p.product_name
-HAVING SUM(o.quantity) < 200
-ORDER BY quantidade_total DESC;
 ```
 
-### Windows Functions
+> [!CAUTION]  
+> Be careful! this will get a lot of rows and may crash the database or the client.
 
-#### Comparison GROUP BY vs Windows Functions
+### 4. Windows Functions
+
+#### 4.1 Comparison GROUP BY vs Windows Functions
 ```sql
 SELECT customer_id,
    MIN(freight) AS min_freight,
@@ -136,7 +175,7 @@ FROM orders
 ORDER BY customer_id, order_id;
 ```
 
-#### RANK(), DENSE_RANK() and ROW_NUMBER()
+#### 4.2 RANK(), DENSE_RANK() and ROW_NUMBER()
 ```sql
 SELECT  
   o.order_id, 
@@ -151,7 +190,7 @@ JOIN
   products p ON p.product_id = o.product_id;
 ```
 
-#### PERCENT_RANK() and CUME_DIST()
+#### 4.3 PERCENT_RANK() and CUME_DIST()
 ```sql
 SELECT  
   order_id, 
@@ -164,14 +203,14 @@ FROM
   order_details;
 ```
 
-#### NTILE
+#### 4.4 NTILE
 ```sql
 SELECT first_name, last_name, title,
    NTILE(3) OVER (ORDER BY first_name) AS group_number
 FROM employees;
 ```
 
-#### LAG(), LEAD()
+#### 4.5 LAG(), LEAD()
 ```sql
 SELECT 
   customer_id, 
