@@ -1,3 +1,6 @@
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+
 # Postgres SQL Data Analyst
 
 ## Summary
@@ -10,8 +13,12 @@
     - [DML – Data Manipulation Language](#23-dml--data-manipulation-language)
     - [DCL – Data Control Language](#24-dcl--data-control-language)
     - [TCL – Transaction Control Language](#25-tcl--transaction-control-language)
-3. []()
-    - []()
+3. [CTE (Common Table Expressions)](#3-cte-common-table-expressions)
+4. [Subqueries](#4-subqueries)
+    - [Turning into CTE](#41-turning-into-cte)
+5. [Views](#5-views)
+6. [Temporary Tables / Staging / Testes ETL](#6-temporary-tables--staging--testes-etl)
+7. [Materialized Views / Snapshot](#7-materialized-views--snapshot)
 
 ## 1. Install Postgres and PGAdmin with Docker
 In VsCode, Open terminal and run:
